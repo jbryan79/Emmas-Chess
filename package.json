@@ -1,0 +1,15 @@
+{
+  "name": "emmas-chess",
+  "version": "1.0.0",
+  "description": "A special chess game for Emma and Daddy",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "dependencies": {
+    "chess.js": "^1.0.0-beta.8",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.4"
+  }
+}
