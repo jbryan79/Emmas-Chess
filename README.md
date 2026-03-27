@@ -23,12 +23,14 @@ Works on desktop, tablet, and phone. Uses Supabase Realtime for the connection.
 If you'd rather run the original Node.js server version on your home network:
 
 ### Docker
+
 ```bash
 cd emmas-chess
 docker-compose up -d --build
 ```
 
 ### Without Docker
+
 ```bash
 cd emmas-chess
 npm install
@@ -42,19 +44,32 @@ Then open `http://localhost:3000` on your PC and `http://YOUR_PC_IP:3000` on Emm
 ## Features
 
 - Realistic wooden chessboard with engraved dedication: *"Love you, Emma — From Daddy"*
-- Smooth piece animations (adjustable speed)
-- 4 board themes: Classic Oak, Dark Walnut, Maple & Cherry, Rosewood
-- 3 piece styles: Classic, Roblox, Neon Glow
-- Adaptive board sizing with Auto, Small, Medium, Large, X-Large options
-- Fullscreen mode
+- 6 built-in themes: Daddy's Board, Classic, Ocean Breeze, Rose Garden, Midnight, Forest
+- Adaptive board sizing: Auto, Small, Medium, Large, X-Large
+- Dynamic fullscreen behavior with board auto-stretch in fullscreen
+- Keyboard shortcut: `F11` toggles in-app fullscreen
 - Font size settings: Small, Medium, Large
-- Drag & drop or click-to-move
-- Legal move indicators
+- Animation speed control
+- Board corner radius and UI shadow strength controls
+- Drag mode toggle (drag pieces on/off)
+- Auto-queen promotion toggle
+- Confirm-move toggle
+- Legal move indicators toggle
+- Coordinates and captured-piece visibility toggles
+- Move timer presets (Off, 15s, 30s, 1m, 2m, 5m)
+- Player profiles: save, load, and delete named option presets
+- Persistent scorekeeping by player name (e.g., `Emma 4 | James 3`) plus draw tracking
 - Move history panel
 - In-game chat with quick emoji reactions (including "You got this! 💪")
-- Sound effects (wood piece sounds!)
+- Sound effects toggle
 - Touch support for tablets/phones
-- Full chess rules: castling, en passant, promotion, draw detection
+- Session rejoin support (resume active game)
+- Full chess rules: castling, en passant, promotion, checkmate, stalemate, and draw detection
+
+## Controls
+
+- `F11`: Toggle fullscreen
+- `Options` button: Open the full customization panel
 
 ## Architecture
 
