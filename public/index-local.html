@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emma's Chess ♛</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♛</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=MedievalSharp&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Lobby Screen -->
+  <div id="lobby" class="screen active">
+    <div class="lobby-container">
+      <div class="lobby-header">
+        <div class="crown-decoration">♛</div>
+        <h1 class="lobby-title">Emma's Chess</h1>
+        <div class="engraving-subtitle">A Game of Love & Strategy</div>
+        <div class="engraving-dedication">
+          <span class="engraving-line">"Love you, Emma"</span>
+          <span class="engraving-from">— From Daddy</span>
+        </div>
+      </div>
+
+      <div class="lobby-form">
+        <div class="form-group">
+          <label for="playerName">Your Name</label>
+          <input type="text" id="playerName" placeholder="Enter your name..." maxlength="20" autocomplete="off">
+        </div>
+
+        <div class="lobby-actions">
+          <div class="action-card" id="createGameCard">
+            <h3>Create a Game</h3>
+            <p>Start a new game and wait for your opponent</p>
+            <div class="form-group">
+              <label for="roomName">Room Name</label>
+              <input type="text" id="roomName" placeholder="e.g., Emma & Daddy" maxlength="30" autocomplete="off">
+            </div>
+            <button id="createRoomBtn" class="btn btn-primary">
+              <span class="btn-icon">♛</span> Create Game
+            </button>
+          </div>
+
+          <div class="divider-or"><span>or</span></div>
+
+          <div class="action-card" id="joinGameCard">
+            <h3>Join a Game</h3>
+            <p>Join an existing game room</p>
+            <div id="roomListContainer">
+              <div class="no-rooms">No games available yet. Create one!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lobby-footer">
+        <div class="wood-grain-border"></div>
+        <p class="footer-quote">"Every chess master was once a beginner." ♟</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waiting Screen -->
+  <div id="waiting" class="screen">
+    <div class="waiting-container">
+      <div class="waiting-board-bg"></div>
+      <div class="waiting-content">
+        <div class="pulse-crown">♛</div>
+        <h2>Waiting for your opponent...</h2>
+        <p id="waitingRoomName" class="waiting-room-name"></p>
+        <p class="waiting-hint">Share the room name so they can join!</p>
+        <div class="waiting-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <button id="cancelWaitBtn" class="btn btn-secondary">Back to Lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game" class="screen">
+    <div class="game-layout">
+      <!-- Left panel: captured pieces & move history -->
+      <div class="side-panel left-panel">
+        <div class="panel-section player-info" id="opponentInfo">
+          <div class="player-badge opponent">
+            <span class="player-piece">♚</span>
+            <span class="player-name" id="opponentName">Opponent</span>
+          </div>
+          <div class="captured-pieces" id="opponentCaptured"></div>
+        </div>
+
+        <div class="panel-section move-history-panel">
+          <h3 class="panel-title">♜ Move History</h3>
+          <div id="moveHistory" class="move-history"></div>
+        </div>
+
+        <div class="panel-section player-info" id="playerInfo">
+          <div class="player-badge player">
+            <span class="player-piece">♔</span>
+            <span class="player-name" id="playerName2">You</span>
+          </div>
+          <div class="captured-pieces" id="playerCaptured"></div>
+        </div>
+      </div>
+
+      <!-- Center: The Board -->
+      <div class="board-area">
+        <div class="board-frame">
+          <div class="engraving-top">
+            <span>Love you, Emma</span>
+          </div>
+          <div class="board-with-coords">
+            <div class="coords coords-left" id="coordsLeft"></div>
+            <div class="board-wrapper">
+              <div class="coords coords-top" id="coordsTop"></div>
+              <div id="chessboard" class="chessboard"></div>
+              <div class="coords coords-bottom" id="coordsBottom"></div>
+            </div>
+            <div class="coords coords-right" id="coordsRight"></div>
+          </div>
+          <div class="engraving-bottom">
+            <span>From Daddy ♥</span>
+          </div>
+        </div>
+
+        <!-- Status bar -->
+        <div id="statusBar" class="status-bar">
+          <span id="statusText">Setting up the board...</span>
+        </div>
+      </div>
+
+      <!-- Right panel: chat & options -->
+      <div class="side-panel right-panel">
+        <div class="panel-section game-controls">
+          <h3 class="panel-title">♞ Game</h3>
+          <div class="control-buttons">
+            <button id="newGameBtn" class="btn btn-small">♻ New Game</button>
+            <button id="offerDrawBtn" class="btn btn-small">🤝 Offer Draw</button>
+            <button id="resignBtn" class="btn btn-small btn-danger">🏳 Resign</button>
+            <button id="optionsBtn" class="btn btn-small">⚙ Options</button>
+          </div>
+        </div>
+
+        <div class="panel-section chat-panel">
+          <h3 class="panel-title">💬 Chat</h3>
+          <div id="chatMessages" class="chat-messages"></div>
+          <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Say something nice..." maxlength="200" autocomplete="off">
+            <button id="sendChatBtn" class="btn btn-small btn-primary">Send</button>
+          </div>
+          <div class="quick-emotes">
+            <button class="emote-btn" data-msg="Good move! 👏">👏</button>
+            <button class="emote-btn" data-msg="Hmm, let me think... 🤔">🤔</button>
+            <button class="emote-btn" data-msg="Great game! ⭐">⭐</button>
+            <button class="emote-btn" data-msg="Love you! ❤️">❤️</button>
+            <button class="emote-btn" data-msg="Oops! 😅">😅</button>
+            <button class="emote-btn" data-msg="You're amazing! 🌟">🌟</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Options Modal -->
+  <div id="optionsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚙ Options</h2>
+        <button id="closeOptionsBtn" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="option-group">
+          <label>Animation Speed</label>
+          <input type="range" id="animSpeed" min="100" max="1000" value="300" step="50">
+          <span id="animSpeedLabel">300ms</span>
+        </div>
+        <div class="option-group">
+          <label>Board Theme</label>
+          <div class="theme-options">
+            <button class="theme-btn active" data-theme="classic">Classic Oak</button>
+            <button class="theme-btn" data-theme="walnut">Dark Walnut</button>
+            <button class="theme-btn" data-theme="maple">Maple & Cherry</button>
+            <button class="theme-btn" data-theme="rosewood">Rosewood</button>
+          </div>
+        </div>
+        <div class="option-group">
+          <label>Piece Style</label>
+          <div class="theme-options">
+            <button class="piece-style-btn active" data-style="classic">Classic</button>
+            <button class="piece-style-btn" data-style="carved">Carved Wood</button>
+          </div>
+        </div>
+        <div class="option-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showLegalMoves" checked>
+            Show Legal Moves
+          </label>
+        </div>
+        <div class="option-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="soundEnabled" checked>
+            Sound Effects
+          </label>
+        </div>
+        <div class="option-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showCoords" checked>
+            Show Coordinates
+          </label>
+        </div>
+        <div class="option-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="highlightLastMove" checked>
+            Highlight Last Move
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promotion Modal -->
+  <div id="promotionModal" class="modal">
+    <div class="modal-content promotion-content">
+      <h3>Choose promotion piece</h3>
+      <div id="promotionPieces" class="promotion-pieces"></div>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div id="gameOverModal" class="modal">
+    <div class="modal-content game-over-content">
+      <div class="game-over-crown">♛</div>
+      <h2 id="gameOverTitle">Game Over</h2>
+      <p id="gameOverMessage"></p>
+      <div class="game-over-buttons">
+        <button id="playAgainBtn" class="btn btn-primary">♻ Play Again</button>
+        <button id="backToLobbyBtn" class="btn btn-secondary">🏠 Back to Lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Draw Offer Modal -->
+  <div id="drawOfferModal" class="modal">
+    <div class="modal-content">
+      <h3>Draw Offered</h3>
+      <p>Your opponent is offering a draw. Do you accept?</p>
+      <div class="modal-buttons">
+        <button id="acceptDrawBtn" class="btn btn-primary">Accept Draw</button>
+        <button id="declineDrawBtn" class="btn btn-secondary">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/pieces.js"></script>
+  <script src="js/sounds.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
