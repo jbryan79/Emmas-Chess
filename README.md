@@ -1,78 +1,65 @@
 # ♛ Emma's Chess
 
-A special two-player chess game made with love — for Emma and Daddy to play together on the home network.
+A special two-player chess game made with love — for Emma and Daddy to play together.
+
+**Live:** [https://emmas-chess.netlify.app](https://emmas-chess.netlify.app)
 
 ---
 
-## Quick Start (Docker — Recommended)
+## Play Online (Recommended)
 
-### 1. Copy this folder to your PC with Docker
+Just open [https://emmas-chess.netlify.app](https://emmas-chess.netlify.app) on any device.
 
-### 2. Build and run:
+1. **Player 1:** Enter your name, click "Create Game" — you'll get a 4-letter code
+2. **Player 2:** Enter your name, enter the code, click "Join Game"
+3. That's it — no installs, no servers, no firewall headaches
+
+Works on desktop, tablet, and phone. Uses Supabase Realtime for the connection.
+
+---
+
+## Self-Host (Optional)
+
+If you'd rather run the original Node.js server version on your home network:
+
+### Docker
 ```bash
 cd emmas-chess
 docker-compose up -d --build
 ```
 
-### 3. Find your PC's local IP:
-```bash
-# On Windows:
-ipconfig
-# Look for "IPv4 Address" under your Wi-Fi or Ethernet adapter (e.g., 192.168.1.100)
-
-# On Mac/Linux:
-hostname -I
-```
-
-### 4. Play!
-- **On your PC:** Open http://localhost:3000
-- **On Emma's device:** Open http://YOUR_PC_IP:3000 (e.g., http://192.168.1.100:3000)
-
-Both devices must be on the same Wi-Fi network.
-
----
-
-## Quick Start (Without Docker)
-
-Make sure Node.js is installed (v18+), then:
-
+### Without Docker
 ```bash
 cd emmas-chess
 npm install
 npm start
 ```
 
-Same network access instructions apply — use your PC's local IP.
+Then open `http://localhost:3000` on your PC and `http://YOUR_PC_IP:3000` on Emma's device. Both must be on the same Wi-Fi.
 
 ---
 
-## How to Play
-
-1. **Player 1:** Enter your name, create a game room (e.g., "Emma & Daddy")
-2. **Player 2:** Enter your name, click "Join" on the room that appears
-3. **Click or drag** pieces to move them
-4. Legal moves are shown as dots on the board
-5. Use the chat and emoji buttons to talk during the game!
-6. After a game ends, "Play Again" swaps colors automatically
-
 ## Features
 
-- Realistic wooden chessboard with engraved dedication
+- Realistic wooden chessboard with engraved dedication: *"Love you, Emma — From Daddy"*
 - Smooth piece animations (adjustable speed)
 - 4 board themes: Classic Oak, Dark Walnut, Maple & Cherry, Rosewood
+- 3 piece styles: Classic, Roblox, Neon Glow
+- Adaptive board sizing with Auto, Small, Medium, Large, X-Large options
+- Fullscreen mode
+- Font size settings: Small, Medium, Large
 - Drag & drop or click-to-move
 - Legal move indicators
 - Move history panel
-- In-game chat with quick emoji reactions
+- In-game chat with quick emoji reactions (including "You got this! 💪")
 - Sound effects (wood piece sounds!)
 - Touch support for tablets/phones
 - Full chess rules: castling, en passant, promotion, draw detection
 
-## Stopping the Server
+## Architecture
 
-```bash
-docker-compose down
-```
+- **Online version** (`public/index-netlify.html`): Single HTML file, Supabase Realtime Broadcast, deployed to Netlify
+- **Local version** (`server/` + `public/`): Node.js + Express + Socket.IO
 
 ---
 
