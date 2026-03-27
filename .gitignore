@@ -4,3 +4,5 @@ desktop.ini
 Thumbs.db
 .env
 *.url
+playwright-report/
+test-results/
