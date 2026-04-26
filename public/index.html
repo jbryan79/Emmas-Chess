@@ -1021,20 +1021,27 @@ let isConnected=false;
 
 function send(data){if(!channel||!isConnected)return;channel.send({type:'broadcast',event:'chess',payload:{...data,senderId:myId}})}
 
-async function warmUp(){
-  try{await fetch(SUPA_URL+'/rest/v1/',{headers:{'apikey':SUPA_KEY},signal:AbortSignal.timeout(5000)})}
-  catch(e){console.log('Warmup ping:',e.message)}
+async function warmUp(statusEl){
+  for(let i=0;i<4;i++){
+    if(statusEl&&i>0)statusEl.textContent=`Waking up server... (${i+1}/4)`;
+    try{
+      const r=await fetch(SUPA_URL+'/rest/v1/',{headers:{'apikey':SUPA_KEY},signal:AbortSignal.timeout(7000)});
+      if(r.status<500)return;
+    }catch(e){console.log('Warmup '+(i+1)+':',e.message)}
+    if(i<3)await new Promise(r=>setTimeout(r,3000));
+  }
 }
 
 function cleanupChannel(){
   stopHeartbeat();
   isConnected=false;
   if(channel){try{supa.removeChannel(channel)}catch(e){}channel=null}
+  try{supa.realtime.disconnect()}catch(e){}
 }
 
 function subscribeChannel(chName,statusEl,onSubscribed,attempt){
   attempt=attempt||1;
-  const maxAttempts=3;
+  const maxAttempts=5;
   statusEl.textContent=attempt>1?`Connecting... (attempt ${attempt} of ${maxAttempts})`:'Connecting...';
   statusEl.className='smsg';
 
@@ -1069,7 +1076,9 @@ async function createGame(){
   const statusEl=document.getElementById('cStatus');
   statusEl.textContent='Waking up server...';statusEl.className='smsg';
   cleanupChannel();
-  await warmUp();
+  await warmUp(statusEl);
+  statusEl.textContent='Connecting...';statusEl.className='smsg';
+  await new Promise(r=>setTimeout(r,1500));
   subscribeChannel('chess-'+gid,statusEl,()=>{
     document.getElementById('gCode').textContent=gid;
     document.getElementById('codeBox').classList.remove('d-none');
@@ -1087,7 +1096,9 @@ async function joinGame(){
   const statusEl=document.getElementById('jStatus');
   statusEl.textContent='Waking up server...';statusEl.className='smsg';
   cleanupChannel();
-  await warmUp();
+  await warmUp(statusEl);
+  statusEl.textContent='Connecting...';statusEl.className='smsg';
+  await new Promise(r=>setTimeout(r,1500));
   subscribeChannel('chess-'+code,statusEl,()=>{
     statusEl.textContent='Connected! Joining game...';
     statusEl.className='smsg ok';
